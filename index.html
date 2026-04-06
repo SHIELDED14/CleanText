@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Cleaner — ล้างข้อความออนไลน์ฟรี | แก้ช่องว่าง PDF</title>
+  <meta name="description" content="เครื่องมือล้างข้อความออนไลน์ฟรี ก๊อปปี้ข้อความจาก PDF หรือเว็บแล้วมีขยะติดมา? ใช้ Text Cleaner ล้างได้ทันที ไม่ต้องติดตั้งโปรแกรม">
+  <meta name="keywords" content="ล้างข้อความ, แก้ช่องว่าง, text cleaner, pdf text, ล้างข้อมูล, เครื่องมือข้อความ">
+  <meta property="og:title" content="Text Cleaner — ล้างข้อความออนไลน์ฟรี">
+  <meta property="og:description" content="ล้างขยะออกจากข้อความที่ก๊อปปี้มาจาก PDF หรือเว็บ ใช้งานฟรี ไม่ต้องติดตั้ง">
+  <meta property="og:type" content="website">
+
+  <!-- Google AdSense — วางโค้ดจาก AdSense ของคุณที่นี่ -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8f8f6;
+      --bg3: #f2f2f0;
+      --text: #1a1a1a;
+      --text2: #6b6b6b;
+      --text3: #9b9b9b;
+      --border: rgba(0,0,0,0.10);
+      --border2: rgba(0,0,0,0.18);
+      --green-bg: #EAF3DE;
+      --green-text: #3B6D11;
+      --red-bg: #FCEBEB;
+      --red-text: #A32D2D;
+      --accent: #1a1a1a;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1c1c;
+        --bg2: #242424;
+        --bg3: #2c2c2a;
+        --text: #f0f0ee;
+        --text2: #a0a09e;
+        --text3: #6a6a68;
+        --border: rgba(255,255,255,0.10);
+        --border2: rgba(255,255,255,0.18);
+        --green-bg: #173404;
+        --green-text: #C0DD97;
+        --red-bg: #501313;
+        --red-text: #F7C1C1;
+        --accent: #f0f0ee;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans Thai', sans-serif;
+      background: var(--bg3);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+    .logo span { color: var(--green-text); }
+    .header-badge {
+      font-size: 11px;
+      background: var(--green-bg);
+      color: var(--green-text);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    /* AdSense Top Banner */
+    .ad-top {
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 10px 0;
+      text-align: center;
+    }
+    .ad-placeholder {
+      display: inline-block;
+      border: 1px dashed var(--border2);
+      border-radius: 6px;
+      padding: 14px 40px;
+      font-size: 12px;
+      color: var(--text3);
+      min-width: 728px;
+      max-width: 100%;
+    }
+    .ad-label { font-size: 10px; color: var(--text3); text-align: center; margin-bottom: 4px; letter-spacing: 0.5px; }
+
+    main { padding: 32px 0 60px; }
+
+    .hero { margin-bottom: 24px; }
+    .hero h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .hero p { font-size: 14px; color: var(--text2); }
+
+    /* Options */
+    .options-card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .options-title { font-size: 12px; font-weight: 500; color: var(--text2); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .opt-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .opt-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--green-text); cursor: pointer; flex-shrink: 0; }
+    .opt-item label { font-size: 13px; color: var(--text); cursor: pointer; user-select: none; }
+
+    /* Editor */
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 640px) { .editor-grid { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 16px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .panel-label { font-size: 11px; font-weight: 500; color: var(--text2); letter-spacing: 0.6px; text-transform: uppercase; }
+    .panel-btn {
+      font-size: 12px;
+      color: var(--text2);
+      padding: 4px 10px;
+      border: 0.5px solid var(--border2);
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .panel-btn:hover { background: var(--bg2); }
+
+    textarea {
+      width: 100%;
+      height: 240px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      border: none;
+      outline: none;
+      resize: none;
+      background: transparent;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .output-area {
+      width: 100%;
+      height: 240px;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .output-placeholder { color: var(--text3); font-style: italic; }
+
+    /* Action Row */
+    .action-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .btn-clean {
+      flex: 1;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 600;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.2px;
+      transition: opacity 0.15s;
+    }
+    .btn-clean:hover { opacity: 0.82; }
+    .btn-clean:active { transform: scale(0.99); }
+
+    /* Stats */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+    @media (max-width: 500px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    .stat {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+    .stat-num { font-size: 22px; font-weight: 600; color: var(--text); }
+    .stat-label { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+    /* AdSense Bottom */
+    .ad-bottom { text-align: center; margin-top: 24px; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: var(--bg);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.25s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    footer {
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      color: var(--text3);
+      border-top: 0.5px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo">Text<span>Cleaner</span></div>
+      <span class="header-badge">ฟรี • ไม่ต้องติดตั้ง</span>
+    </div>
+  </div>
+</header>
+
+<!-- AdSense Top Banner -->
+<div class="ad-top">
+  <div class="ad-label">ADVERTISEMENT</div>
+  <!-- วางโค้ด AdSense ของคุณแทนบล็อกด้านล่างนี้ -->
+  <div class="ad-placeholder">Google AdSense — 728×90 Leaderboard Banner</div>
+  <!--
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:728px;height:90px"
+       data-ad-client="ca-pub-XXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+</div>
+
+<main>
+  <div class="container">
+
+    <div class="hero">
+      <h1>ล้างข้อความออนไลน์ ฟรี</h1>
+      <p>ก๊อปปี้ข้อความจาก PDF, Word, หรือเว็บแล้วมี "ขยะ" ติดมา? วางตรงนี้แล้วกด ล้างข้อความ ได้เลย</p>
+    </div>
+
+    <div class="options-card">
+      <div class="options-title">เลือกสิ่งที่ต้องการล้าง</div>
+      <div class="options-grid">
+        <div class="opt-item"><input type="checkbox" id="opt1" checked><label for="opt1">ลบช่องว่างซ้ำ</label></div>
+        <div class="opt-item"><input type="checkbox" id="opt2" checked><label for="opt2">ลบบรรทัดว่างซ้ำ</label></div>
+        <div class="opt-item"><input type="checkbox" id="opt3" checked><label for="opt3">ตัดช่องว่างหน้า-หลังบรรทัด</label></div>
+        <div class="opt-item"><input type="checkbox" id="opt4"><label for="opt4">รวมทุกบรรทัดเป็นย่อหน้า</label></div>
+        <div class="opt-item"><input type="checkbox" id="opt5"><label for="opt5">ลบตัวเลขข้างหน้าบรรทัด</label></div>
+        <div class="opt-item"><input type="checkbox" id="opt6"><label for="opt6">ลบ URL / ลิงก์</label></div>
+        <div class="opt-item"><input type="checkbox" id="opt7"><label for="opt7">แปลงเป็นตัวพิมพ์เล็กทั้งหมด</label></div>
+        <div class="opt-item"><input type="checkbox" id="opt8"><label for="opt8">ลบอักขระพิเศษ</label></div>
+      </div>
+    </div>
+
+    <div class="editor-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-label">ข้อความต้นฉบับ</span>
+          <button class="panel-btn" onclick="clearInput()">ล้าง</button>
+        </div>
+        <textarea id="inputText" placeholder="วางข้อความที่ก๊อปปี้มาจาก PDF, เว็บ, Word หรือที่ใดก็ได้ที่นี่..." oninput="updateStats()"></textarea>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-label">ผลลัพธ์</span>
+          <button class="panel-btn" onclick="copyOutput()">คัดลอก</button>
+        </div>
+        <div class="output-area" id="outputText">
+          <span class="output-placeholder">ผลลัพธ์จะปรากฏที่นี่...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-clean" onclick="cleanText()">ล้างข้อความ</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num" id="charIn">0</div><div class="stat-label">ตัวอักษร (ก่อน)</div></div>
+      <div class="stat"><div class="stat-num" id="charOut">—</div><div class="stat-label">ตัวอักษร (หลัง)</div></div>
+      <div class="stat"><div class="stat-num" id="wordCount">0</div><div class="stat-label">จำนวนคำ</div></div>
+      <div class="stat"><div class="stat-num" id="lineCount">0</div><div class="stat-label">จำนวนบรรทัด</div></div>
+    </div>
+
+    <!-- AdSense Bottom Rectangle -->
+    <div class="ad-bottom">
+      <div class="ad-label">ADVERTISEMENT</div>
+      <div class="ad-placeholder" style="min-width:0; padding: 24px 40px;">Google AdSense — 336×280 Rectangle</div>
+      <!--
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:336px;height:280px"
+           data-ad-client="ca-pub-XXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      -->
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    &copy; 2025 TextCleaner · เครื่องมือล้างข้อความออนไลน์ฟรี · ข้อมูลทั้งหมดประมวลผลในเบราว์เซอร์ของคุณ ไม่มีการส่งข้อมูลออกไป
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function updateStats() {
+    var val = document.getElementById('inputText').value;
+    document.getElementById('charIn').textContent = val.length.toLocaleString();
+    var words = val.trim() === '' ? 0 : val.trim().split(/\s+/).length;
+    document.getElementById('wordCount').textContent = words.toLocaleString();
+    document.getElementById('lineCount').textContent = val === '' ? 0 : val.split('\n').length.toLocaleString();
+  }
+
+  function cleanText() {
+    var text = document.getElementById('inputText').value;
+    if (!text.trim()) { showToast('กรุณาวางข้อความก่อนนะครับ'); return; }
+
+    if (document.getElementById('opt3').checked) {
+      text = text.split('\n').map(function(l){ return l.trim(); }).join('\n');
+    }
+    if (document.getElementById('opt1').checked) {
+      text = text.replace(/[ \t]+/g, ' ');
+    }
+    if (document.getElementById('opt5').checked) {
+      text = text.replace(/^\s*\d+[\.\)]\s*/gm, '');
+    }
+    if (document.getElementById('opt6').checked) {
+      text = text.replace(/https?:\/\/[^\s]+/g, '');
+      text = text.replace(/www\.[^\s]+/g, '');
+    }
+    if (document.getElementById('opt8').checked) {
+      text = text.replace(/[^\u0E00-\u0E7Fa-zA-Z0-9\s\.,!?;:\-\(\)\"\']/g, '');
+    }
+    if (document.getElementById('opt7').checked) {
+      text = text.toLowerCase();
+    }
+    if (document.getElementById('opt4').checked) {
+      text = text.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim();
+    } else if (document.getElementById('opt2').checked) {
+      text = text.replace(/\n{3,}/g, '\n\n');
+    }
+
+    var out = document.getElementById('outputText');
+    out.textContent = text;
+    document.getElementById('charOut').textContent = text.length.toLocaleString();
+    showToast('ล้างข้อความเรียบร้อย!');
+  }
+
+  function copyOutput() {
+    var out = document.getElementById('outputText');
+    var text = out.textContent;
+    if (!text || out.querySelector('.output-placeholder')) { showToast('ยังไม่มีผลลัพธ์'); return; }
+    navigator.clipboard.writeText(text).then(function(){
+      showToast('คัดลอกแล้ว!');
+    });
+  }
+
+  function clearInput() {
+    document.getElementById('inputText').value = '';
+    document.getElementById('outputText').innerHTML = '<span class="output-placeholder">ผลลัพธ์จะปรากฏที่นี่...</span>';
+    document.getElementById('charIn').textContent = '0';
+    document.getElementById('charOut').textContent = '—';
+    document.getElementById('wordCount').textContent = '0';
+    document.getElementById('lineCount').textContent = '0';
+  }
+
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  }
+</script>
+</body>
+</html>
